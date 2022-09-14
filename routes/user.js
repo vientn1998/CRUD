@@ -4,7 +4,7 @@ const {signup, getProfile, getUsers, update} = require("../controllers/userContr
 
 router.post("/sign-up", signup);
 router.get("/", getUsers);
-router.get("/getProfile/:phone_number", getProfile);
-router.post("/update", update);
+router.get("/getProfile/:phoneNumber", getProfile);
+router.post("/update/:id", update);
 
 module.exports = router;

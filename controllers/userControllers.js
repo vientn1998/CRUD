@@ -13,28 +13,28 @@ exports.signup = async (req, res) => {
       errorCode: "REGISTER_FAILED",
     });
   }
-  const { phone_number, auth_type } = body;
+  const { phoneNumber, authType } = body;
   const types = ["google", "phone", "apple"];
-  if (!phone_number) {
+  if (!phoneNumber) {
     return res.status(400).json({
       success: false,
       data: null,
-      message: "Đã xảy ra lỗi",
+      message: "Số điện thoại không hợp lệ",
       code: 400,
       errorCode: "REGISTER_FAILED",
     });
   }
-  if (!types.includes(auth_type)) {
+  if (!types.includes(authType)) {
     return res.status(400).json({
       success: false,
       data: null,
-      message: "Đã xảy ra lỗi",
+      message: "Phương thức không hợp lệ",
       code: 400,
       errorCode: "REGISTER_FAILED",
     });
   }
   let userDB = await User.findOne({
-    phone_number: { $eq: phone_number },
+    phoneNumber: { $eq: phoneNumber },
   });
   if (userDB) {
     res.status(400).send({
@@ -46,8 +46,8 @@ exports.signup = async (req, res) => {
     });
   } else {
     const user = await User.create({
-      phone_number: phone_number,
-      auth_type: auth_type,
+      phoneNumber: phoneNumber,
+      authType: authType,
     });
     if (user != null) {
       return res.status(200).json({
@@ -69,12 +69,10 @@ exports.signup = async (req, res) => {
 };
 
 exports.getProfile = async (req, res) => {
-  const phone_number = req.params.phone_number;
-  console.log(phone_number);
+  const phoneNumber = req.params.phoneNumber;
   let user = await User.findOne({
-    phone_number: { $eq: phone_number },
+    phoneNumber: { $eq: phoneNumber },
   });
-  console.log(user);
   if (user) {
     return res.status(200).json({
       success: true,
@@ -92,7 +90,7 @@ exports.getProfile = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   let user = await User.find({
-    phone_number: {$exists: true, $ne: ""}
+    phoneNumber: {$exists: true, $ne: ""}
   });
   return res.status(200).json({
     success: true,
@@ -103,29 +101,25 @@ exports.getUsers = async (req, res) => {
 
 
 exports.update = async (req, res) => {
-  const { full_name, email, avatar } = req.body;
-  const user_id = req.query.id;
-  console.log(full_name);
-  console.log(email);
-  console.log(user_id);
+  const { fullName, email, avatar } = req.body;
+  const userId = req.params.id;
   let user = await User.findOneAndUpdate(
     {
-      _id: ObjectId(user_id),
+      _id: ObjectId(userId),
     },
-    { full_name: full_name, email: email,  }
-  ).then((user) => {
-    if (user) {
-      res.status(200).json({
-        success: true,
-        message: "Thành công.",
-        data: user,
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "Đã xảy ra lỗi.",
-        data: null,
-      })
-    }
-  });
+    { fullName: fullName, email: email, avatar: avatar  }, {new: true}
+  );
+  if (user) {
+    return res.status(200).json({
+      success: true,
+      message: "Thành công.",
+      data: user,
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "Đã xảy ra lỗi.",
+      data: null,
+    })
+  }
 };

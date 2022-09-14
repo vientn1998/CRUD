@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema(
+const JobSchema = new Schema(
   {
     fullName: {
       type: String,
@@ -35,5 +35,5 @@ const UserSchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-const User = mongoose.model("User", UserSchema);
-module.exports = { User };
+const Job = mongoose.model("Job", JobSchema);
+module.exports = { Job };
