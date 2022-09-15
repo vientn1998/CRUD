@@ -90,15 +90,14 @@ exports.getProfile = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   let user = await User.find({
-    phoneNumber: {$exists: true, $ne: ""}
+    phoneNumber: { $exists: true, $ne: "" },
   });
   return res.status(200).json({
     success: true,
     message: "Thành công.",
     data: user,
-  })
+  });
 };
-
 
 exports.update = async (req, res) => {
   const { fullName, email, avatar } = req.body;
@@ -107,12 +106,13 @@ exports.update = async (req, res) => {
     {
       _id: ObjectId(userId),
     },
-    { fullName: fullName, email: email, avatar: avatar  }, {new: true}
+    { fullName: fullName, email: email, avatar: avatar },
+    { new: true }
   );
   if (user) {
     return res.status(200).json({
       success: true,
-      message: "Thành công.",
+      message: "Cập nhật thành công.",
       data: user,
     });
   } else {
@@ -120,6 +120,6 @@ exports.update = async (req, res) => {
       success: false,
       message: "Đã xảy ra lỗi.",
       data: null,
-    })
+    });
   }
 };

@@ -3,27 +3,46 @@ const Schema = mongoose.Schema;
 
 const JobSchema = new Schema(
   {
-    fullName: {
+    name: {
       type: String,
       default: "",
     },
-    authType: {
+    jobType: {
       type: String,
-      enum: ["google", "phone", "apple"],
+      enum: ["singal", "organization"],
+      default: "singal"
     },
-    socicalId: {
-      type: String,
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    timekeepingType: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "TimekeepingType",
+      },
+    ],
+    timekeeping: [
+      {
+        type: Schema.Types.ObjectId,
+      },
+    ],
+    startTime: {
+      type: Date,
+      default: Date.now,
     },
-    email: {
-      type: String,
+    endTime: {
+      type: Date,
+      default: Date.now,
     },
-    phoneNumber: {
-      type: String,
-    },
-    passCode: {
-      type: String,
-    },
-    avatar: {
+    images: [
+      {
+        type: String,
+      },
+    ],
+    note: {
       type: String,
     },
     status: {
@@ -32,7 +51,7 @@ const JobSchema = new Schema(
       default: "active",
     },
   },
-  { timestamps: true, versionKey: false }
+  { versionKey: false }
 );
 
 const Job = mongoose.model("Job", JobSchema);

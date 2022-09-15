@@ -9,6 +9,7 @@ const configs = require("./configs/database");
 mongoose.connect(configs.database);
 
 const userRouter = require("./routes/user");
+const timekeepingtypeRouter = require("./routes/timekeepingtype");
 
 const app = express();
 app.use(logger("dev"));
@@ -49,6 +50,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRouter);
+app.use("/api/timekeepingtype",timekeepingtypeRouter);
 
 
 
