@@ -9,9 +9,6 @@ const TimekeepingSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
     },
-    timekeepingType: {
-      type: Schema.Types.ObjectId,
-    },
     startTime: {
       type: Date,
       default: Date.now,

@@ -8,8 +8,11 @@ const configs = require("./configs/database");
 
 mongoose.connect(configs.database);
 
-const userRouter = require("./routes/user");
-const timekeepingtypeRouter = require("./routes/timekeepingtype");
+const userRouter = require("./routes/user.route");
+const timekeepingtypeRouter = require("./routes/timekeepingType.route");
+const advanceSalaryRouter = require("./routes/advanceSalary.route");
+const jobRouter = require("./routes/job.route");
+const timekeepingRouter = require("./routes/timekeeping.route");
 
 const app = express();
 app.use(logger("dev"));
@@ -51,6 +54,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRouter);
 app.use("/api/timekeepingtype",timekeepingtypeRouter);
+app.use("/api/advancesalary",advanceSalaryRouter);
+app.use("/api/job",jobRouter);
+app.use("/api/timekeeping",timekeepingRouter);
 
 
 

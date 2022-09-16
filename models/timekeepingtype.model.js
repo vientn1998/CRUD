@@ -6,15 +6,12 @@ const TimekeepingTypeSchema = new Schema(
     name: {
       type: String,
     },
-    jobId: {
-      type: Schema.Types.ObjectId,
-    },
-    userId: {
-      type: Schema.Types.ObjectId,
-    },
     salary: {
       type: Schema.Types.Number,
       default: 0.0,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
     },
     type: {
       type: String,

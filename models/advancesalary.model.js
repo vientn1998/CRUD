@@ -9,9 +9,6 @@ const AdvanceSalarySchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
     },
-    timekeepingType: {
-      type: Schema.Types.ObjectId,
-    },
     dateTime: {
       type: Date,
       default: Date.now,

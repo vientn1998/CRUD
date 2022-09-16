@@ -1,4 +1,4 @@
-const { TimekeepingType } = require("../models/timekeepingtype.model");
+const { AdvanceSalary } = require("../models/advancesalary.model");
 const { ObjectId } = require("mongodb");
 
 exports.create = async (req, res) => {
@@ -12,28 +12,18 @@ exports.create = async (req, res) => {
       errorCode: "CREATE_FAILED",
     });
   }
-  const types = ["hour", "day", "wifi"];
-  if (!types.includes(body.type)) {
-    return res.status(400).json({
-      success: false,
-      data: null,
-      message: "Phương thức không hợp lệ",
-      code: 400,
-      errorCode: "CREATE_FAILED",
-    });
-  }
-  const timekeepingtype = await TimekeepingType.create({
-    name: body.name,
+  const advancesalary = await AdvanceSalary.create({
+    salary: body.salary,
     type: body.type,
     salary: body.salary,
+    note: body.note,
     jobId: body.jobId,
     userId: body.userId,
-    note: body.note,
   });
-  if (timekeepingtype != null) {
+  if (advancesalary != null) {
     return res.status(200).json({
       success: true,
-      data: timekeepingtype,
+      data: advancesalary,
       message: "Tạo thành công.",
       code: 200,
     });
@@ -59,24 +49,21 @@ exports.update = async (req, res) => {
       errorCode: "UPDATE_FAILED",
     });
   }
-  let timekeepingtype = await TimekeepingType.findOneAndUpdate(
+  let advancesalary = await AdvanceSalary.findOneAndUpdate(
     {
       _id: ObjectId(body.id),
     },
     {
-      name: body.name,
-      type: body.type,
+      dateTime: body.dateTime,
       salary: body.salary,
-      jobId: body.jobId,
-      userId: body.userId,
       note: body.note,
     },
     { new: true }
   );
-  if (timekeepingtype != null) {
+  if (advancesalary != null) {
     return res.status(200).json({
       success: true,
-      data: timekeepingtype,
+      data: advancesalary,
       message: "Cập nhật thành công.",
       code: 200,
     });
@@ -93,13 +80,13 @@ exports.update = async (req, res) => {
 
 
 exports.getAll = async (req, res) => {
-  let types = await TimekeepingType.find({
+  let results = await AdvanceSalary.find({
   });
-  if (types) {
+  if (results) {
     return res.status(200).json({
       success: true,
       message: "Thành công.",
-      data: types,
+      data: results,
     });
   } else {
     return res.status(400).json({

@@ -9,8 +9,8 @@ const JobSchema = new Schema(
     },
     jobType: {
       type: String,
-      enum: ["singal", "organization"],
-      default: "singal"
+      enum: ["individual", "organization"],
+      default: "individual"
     },
     members: [
       {
@@ -18,17 +18,18 @@ const JobSchema = new Schema(
         ref: "User",
       },
     ],
-    timekeepingType: [
+    timekeepingTypes: [
       {
         type: Schema.Types.ObjectId,
         ref: "TimekeepingType",
       },
     ],
-    timekeeping: [
-      {
-        type: Schema.Types.ObjectId,
-      },
-    ],
+    // timekeeping: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Timekeeping",
+    //   },
+    // ],
     startTime: {
       type: Date,
       default: Date.now,
