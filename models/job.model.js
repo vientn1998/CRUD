@@ -10,12 +10,22 @@ const JobSchema = new Schema(
     jobType: {
       type: String,
       enum: ["individual", "organization"],
-      default: "individual"
+      default: "individual",
+    },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    timekeepings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Timekeeping",
       },
     ],
     timekeepingTypes: [
@@ -24,19 +34,27 @@ const JobSchema = new Schema(
         ref: "TimekeepingType",
       },
     ],
-    // timekeeping: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "Timekeeping",
-    //   },
-    // ],
+    totalChecked: {
+      type: Schema.Types.Number,
+      default: 0,
+    },
+    totalSalary: {
+      type: Schema.Types.Number,
+      default: 0,
+    },
+    totalAdvance: {
+      type: Schema.Types.Number,
+      default: 0,
+    },
     startTime: {
       type: Date,
       default: Date.now,
     },
     endTime: {
       type: Date,
-      default: Date.now,
+    },
+    reminderTime: {
+      type: Date,
     },
     images: [
       {
@@ -52,7 +70,7 @@ const JobSchema = new Schema(
       default: "active",
     },
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true, }
 );
 
 const Job = mongoose.model("Job", JobSchema);

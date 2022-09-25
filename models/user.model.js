@@ -9,8 +9,12 @@ const UserSchema = new Schema(
     },
     authType: {
       type: String,
-      enum: ["google", "phone", "apple"],
+      enum: ["google", "phone", "apple", "deviceId"],
     },
+    devices: [{
+      type: Schema.Types.ObjectId,
+      ref: "Device"
+    }],
     socicalId: {
       type: String,
     },

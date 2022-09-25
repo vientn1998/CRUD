@@ -12,13 +12,32 @@ exports.create = async (req, res) => {
       errorCode: "CREATE_FAILED",
     });
   }
-  const job = await Job.create({
-    name: body.name,
-    type: body.type,
-    members: body.members,
-    timekeepingTypes: body.timekeepingTypes,
-    note: body.note,
-  });
+  var _params = null;
+  if (body.endTime) {
+    _params = {
+      name: body.name,
+      jobType: body.jobType,
+      ownerId: body.ownerId,
+      members: body.members,
+      startTime: new Date(body.startTime),
+      endTime: new Date(body.endTime),
+      reminderTime: new Date(body.reminderTime),
+      timekeepingTypes: body.timekeepingTypes,
+      note: body.note,
+    };
+  } else {
+    _params = {
+      name: body.name,
+      jobType: body.jobType,
+      ownerId: body.ownerId,
+      members: body.members,
+      startTime: new Date(body.startTime),
+      reminderTime: new Date(body.reminderTime),
+      timekeepingTypes: body.timekeepingTypes,
+      note: body.note,
+    };
+  }
+  const job = await Job.create(_params);
   if (job != null) {
     return res.status(200).json({
       success: true,
@@ -80,14 +99,51 @@ exports.update = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-  let results = await Job.find({})
+  var results = await Job.find({
+    ownerId: req.query.ownerId,
+  }).sort({updatedAt: -1})
     .populate("members")
-    .populate("timekeepingTypes");
+    .populate({
+      path: "members",
+      populate: "devices",
+    })
+    .populate("timekeepingTypes")
+    .populate("timekeepings");
+    if (req.query.limit) {
+      results = results.slice(0, req.query.limit);
+    }
   if (results) {
     return res.status(200).json({
       success: true,
       message: "Thành công.",
       data: results,
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "Đã xảy ra lỗi.",
+      data: null,
+    });
+  }
+};
+
+exports.getDetailById = async (req, res) => {
+  const _id = req.params.id;
+  let job = await Job.findOne({
+    _id: { $eq: _id },
+  })
+    .populate("members")
+    .populate({
+      path: "members",
+      populate: "devices",
+    })
+    .populate("timekeepingTypes")
+    .populate("timekeepings");
+  if (job) {
+    return res.status(200).json({
+      success: true,
+      message: "Thành công.",
+      data: job,
     });
   } else {
     return res.status(400).json({

@@ -20,11 +20,6 @@ const TimekeepingTypeSchema = new Schema(
     note: {
       type: String,
     },
-    status: {
-      type: String,
-      enum: ["pending", "active", "inactive"],
-      default: "active",
-    },
   },
   { versionKey: false }
 );
